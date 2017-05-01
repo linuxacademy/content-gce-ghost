@@ -1,0 +1,1 @@
+# content-gce-ghost
