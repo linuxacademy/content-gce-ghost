@@ -1,0 +1,40 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: ghost
+  labels: 
+    name: ghost
+spec:
+  restartPolicy: Always
+  containers: 
+    - image: "ghost:latest"
+      name: "ghost"
+      ports:
+      - containerPort: 2368
+      env:
+      - name: GHOST_URL
+        value: "http://blog.example.com"
+      - name: GHOST_CONTENT
+        value: "/var/lib/ghost"
+      - name: PROD_FORCE_ADMIN_SSL
+        value: "false"
+      - name: GCLOUD_PROJECT
+        value: learning-containers
+      - name: GCLOUD_BUCKET
+        value: tthomsen_ghost_blog2
+      - name: MYSQL_HOST
+        value: mysql
+      - name: MYSQL_USER
+        value: ghost_user
+      - name: MYSQL_PASS
+        value: ghost_pass
+      - name: MYSQL_DB
+        value: ghost
+      volumeMounts:
+        - name: ghost-vol
+          mountPath: /var/lib/ghost
+  volumes:
+    - name: ghost-vol
+      gcePersistentDisk:
+        pdName: ghost-disk
+        fsType: ext4
